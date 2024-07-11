@@ -17,75 +17,110 @@ katma değerli servislerimiz ile ödeme giderlerinizi azaltın, cironuzu artır�
 </p>
 
 ## PAYGATE
-*PayGate ile tüm online ödemelerinizi tek merkezden yönetin ,katma değerli servislerimiz ile ödeme giderlerinizi azaltın, cironuzu artırın ve işletmenizi büyütün.*
-
-## Table of contents
-- [Quick start](#quick-start)
-- [Status](#status)
-- [What's included](#whats-included)
-- [Bugs and feature requests](#bugs-and-feature-requests)
-- [Documentation](#documentation)
-- [Contributing](#contributing)
-- [Community](#community)
-- [Versioning](#versioning)
-- [Creators](#creators)
-- [Thanks](#thanks)
-- [Copyright and license](#copyright-and-license)
+[![Craftgate Dotnet CI](https://img.shields.io/badge/Craftgate%20Dotnet%20CI-passing-brightgreen)]()
+[![nuget](https://img.shields.io/badge/nuget-v1.0.61-blue)]()
+[![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)]()
 
 
-## Quick start
+## Requirements
+- .NET Framework 4.6+
+- .NET Core 1.1+
+- .NET Core 2.0+
 
-[GitHub](https://github.com/Payment-Gateway-Team/PaymentGateway.git)
-
-## Status
-
-## What's included
-
-## Bugs and feature requests
-
-## Documentation
-
-## Contributing
-
-## Community
-
-## Versioning
-
-
-## Creators
-
-
-## Thanks
-
-## Sponsors
-
-## Backers
-
-
-## Copyright and license
+## Installation
+`Install-Package  ...... `
 
 
 
+## Usage
+PayGate API'sine erişmek için öncelikle API kimlik bilgilerini (örneğin bir API anahtarı ve gizli anahtar) edinmeniz gerekir. Zaten bir Craftgate hesabınız yoksa https://paygate.io/ adresinden kaydolabilirsiniz.
 
-### Örnek Kodlar
-
-
-*PHP*
-
-![Untitled picture3](https://github.com/esrayildiizz/Example/assets/106755194/29227672-c834-433b-818f-9757a618bacf)
+API kimlik bilgilerinizi aldıktan sonra, PayGate kimlik bilgilerinizle bir örnek oluşturarak PayGate'i kullanmaya başlayabilirsiniz.
 
 
-### **Örnek Kodları Hazırlama**
+`$craftgate = new \PayGate\PayGate(array(
+    'apiKey' => '<YOUR API KEY>',
+    'secretKey' => '<YOUR SECRET KEY>',
+));`
 
-- PHP için `examples/php/Example.php`
 
-### **Kod Dosyalarını Yükleme**
-Hazırladığınız dosyaları repository'e yükleyin:
-- Git kullanarak yerel bilgisayarınızda repository'yi klonlayın.
-- Dosyaları ilgili dizinlere ekleyin.
-- Değişiklikleri GitHub'a gönderin:
-```sh
-git add .
-git commit -m "Add example codes for PHP"
-git push origin main
+Varsayılan olarak PayGate istemcisi üretim API sunucularına bağlanır https://api.paygate.io. Test amaçlı olarak lütfen https://sandbox-api.paygate.io. kullanarak deneme alanı URL'sini kullanın.
+
+
+`$paygate = new \PayGate\PayGate(array(
+    'apiKey' => '<YOUR API KEY>',
+    'secretKey' => '<YOUR SECRET KEY>',
+    'baseUrl' => 'https://sandbox-api.paygate.io',
+));`
+
+
+## Examples
+
+
+### Running the Examples
+
+
+### Credit Card Payment Use Case
+
+```php
+$craftgate = new \Craftgate\Craftgate(array(
+    'apiKey' => '<YOUR API KEY>',
+    'secretKey' => '<YOUR SECRET KEY>',
+    'baseUrl' => 'https://sandbox-api.craftgate.io',
+));
+
+$request = array(
+    'price' => 100,
+    'paidPrice' => 100,
+    'walletPrice' => 0,
+    'installment' => 1,
+    'currency' => \Craftgate\Model\Currency::TL,
+    'paymentGroup' => \Craftgate\Model\PaymentGroup::LISTING_OR_SUBSCRIPTION,
+    'conversationId' => '456d1297-908e-4bd6-a13b-4be31a6e47d5',
+    'card' => array(
+        'cardHolderName' => 'Haluk Demir',
+        'cardNumber' => '5258640000000001',
+        'expireYear' => '2044',
+        'expireMonth' => '07',
+        'cvc' => '000'
+    ),
+    'items' => array(
+        array(
+            'externalId' => \Craftgate\Util\Guid::generate(),
+            'name' => 'Item 1',
+            'price' => 30
+        ),
+        array(
+            'externalId' => \Craftgate\Util\Guid::generate(),
+            'name' => 'Item 2',
+            'price' => 50
+        ),
+        array(
+            'externalId' => \Craftgate\Util\Guid::generate(),
+            'name' => 'Item 3',
+            'price' => 20
+        )
+    )
+);
+
+$response = $craftgate->payment()->createPayment($request);
+
+var_dump($response);
+```
+
+### Contributions
+*For all contributions to this client please see the contribution guide here.*
+
+## License
+
+**MIT**
+
+
+
+
+
+
+
+
+
 
